@@ -6,7 +6,7 @@ import { stat } from "node:fs/promises";
 import { parse } from "node:path";
 import { performance } from "perf_hooks";
 
-const name = "prepub";
+const name = "teapub";
 const config = {
   plugins: [
     ignorePlugin([

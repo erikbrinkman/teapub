@@ -1,7 +1,9 @@
-import { Node, parseFragment } from "parse5";
+import { DefaultTreeAdapterMap, parseFragment } from "parse5";
 import { ComponentChild, h, VNode } from "preact";
 import render from "preact-render-to-string";
 import { xmlHeader } from "./utils";
+
+type Node = DefaultTreeAdapterMap["node"];
 
 /**
  * how to handle missing images

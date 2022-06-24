@@ -51,7 +51,6 @@ function ContentOpf({
   );
 
   return (
-    // @ts-expect-error #48657 fixed in ts@>4.6.2
     <package
       xmlns="http://www.idpf.org/2007/opf"
       xmlns:opf="http://www.idpf.org/2007/opf"
@@ -72,7 +71,6 @@ function ContentOpf({
       <manifest>{manifestItems}</manifest>
       <spine>{spineItems}</spine>
       <guide></guide>
-      {/* @ts-expect-error #48657 */}
     </package>
   );
 }

@@ -225,11 +225,16 @@ declare module "preact/src/jsx" {
         xmlns: string;
         version: string;
       };
+      package: {
+        children: ComponentChildren;
+        xmlns: string;
+        "xmlns:opf": string;
+        version: string;
+      };
       item: { id: string; href: string; "media-type": Mime };
       itemref: { idref: string };
       rootfile: { "full-path": string; "media-type": Mime };
       rootfiles: { children: ComponentChildren };
-      package: { xmlns: string; "xmlns:opf": string; version: string };
       "dc:creator": { children: string };
       "dc:language": { children: LangCode };
       "dc:title": { children: string };

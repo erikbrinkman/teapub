@@ -26,7 +26,7 @@
     "dist/**/*.d.ts"
   ],
   "scripts": {
-    "fmt": "prettier --write 'src/**/*.{ts,tsx}' '*.json' bundle.mjs",
+    "fmt": "prettier --cache --write 'src/**/*.{ts,tsx}' '*.json' bundle.mjs",
     "lint": "pnpify tsc && eslint --cache 'src/**/*.{ts,tsx}' bundle.mjs && pnpify typedoc --emit none",
     "test": "jest --coverage",
     "doc": "pnpify typedoc",
@@ -35,41 +35,41 @@
     "prepack": "yarn lint && yarn test && yarn build && yarn bundle"
   },
   "dependencies": {
-    "jszip": "^3.10.0",
+    "jszip": "^3.10.1",
     "parse5": "^7.0.0",
-    "preact": "^10.8.2",
-    "preact-render-to-string": "^5.2.0",
+    "preact": "^10.10.1",
+    "preact-render-to-string": "^5.2.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.5",
-    "@babel/plugin-transform-react-jsx": "^7.17.12",
-    "@babel/preset-env": "^7.18.2",
-    "@babel/preset-typescript": "^7.17.12",
-    "@babel/types": "^7.18.4",
-    "@types/jest": "^28.1.3",
-    "@types/node": "^18.0.0",
-    "@types/sharp": "^0.30.4",
+    "@babel/core": "^7.18.10",
+    "@babel/plugin-transform-react-jsx": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/types": "^7.18.10",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.6.4",
+    "@types/sharp": "^0.30.5",
     "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
-    "@yarnpkg/esbuild-plugin-pnp": "^3.0.0-rc.9",
-    "@yarnpkg/pnpify": "^4.0.0-rc.9",
-    "babel-jest": "^28.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
+    "@yarnpkg/esbuild-plugin-pnp": "^3.0.0-rc.14",
+    "@yarnpkg/pnpify": "^4.0.0-rc.14",
+    "babel-jest": "^28.1.3",
     "chalk": "5.0.1",
-    "esbuild": "^0.14.47",
+    "esbuild": "^0.14.53",
     "esbuild-plugin-ignore": "^1.1.1",
-    "eslint": "^8.18.0",
+    "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^26.5.3",
+    "eslint-plugin-jest": "^26.7.0",
     "eslint-plugin-spellcheck": "^0.0.19",
     "eslint-plugin-tsdoc": "^0.2.16",
-    "jest": "^28.1.1",
+    "jest": "^28.1.3",
     "lorem-ipsum": "^2.0.8",
     "prettier": "^2.7.1",
-    "prettier-plugin-organize-imports": "^3.0.0",
+    "prettier-plugin-organize-imports": "^3.0.2",
     "sharp": "^0.30.7",
-    "typedoc": "^0.22.17",
+    "typedoc": "^0.23.10",
     "typescript": "^4.7.4"
   },
   "resolutions": {
@@ -199,5 +199,5 @@
       ]
     }
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.2"
 }

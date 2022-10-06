@@ -1,6 +1,6 @@
 {
   "name": "teapub",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "generate epubs using typescript and preact",
   "keywords": [
     "preact",

@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "fmt": "prettier --cache --write 'src/**/*.{ts,tsx}' '*.json' bundle.mjs",
-    "lint": "pnpify tsc && eslint --cache 'src/**/*.{ts,tsx}' bundle.mjs && pnpify typedoc --emit none",
+    "lint": "pnpify tsc && eslint --cache 'src/**/*.{ts,tsx}' && pnpify typedoc --emit none",
     "test": "jest --coverage",
     "doc": "pnpify typedoc",
     "build": "pnpify tsc -p tsconfig.build.json",
@@ -118,9 +118,15 @@
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking",
       "plugin:jest/recommended",
       "prettier"
     ],
+    "parserOptions": {
+      "project": [
+        "./tsconfig.json"
+      ]
+    },
     "env": {
       "node": true
     },

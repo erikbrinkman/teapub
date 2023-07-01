@@ -57,6 +57,7 @@ function ContentOpf({
       version="3.0"
       unique-identifier="BookId"
     >
+      {/* @ts-expect-error metadata now part of svg, so manual tags no longer work */}
       <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
         <dc:identifier id="BookId">{uid}</dc:identifier>
         <dc:title>{title}</dc:title>

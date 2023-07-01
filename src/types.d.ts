@@ -219,7 +219,6 @@ declare module "preact/src/jsx" {
       guide: { children?: ComponentChildren };
       spine: { children?: ComponentChildren; toc?: string };
       manifest: { children: ComponentChildren };
-      metadata: { children: ComponentChildren; "xmlns:dc": string };
       container: {
         children: ComponentChildren;
         xmlns: string;

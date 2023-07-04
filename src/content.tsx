@@ -1,7 +1,6 @@
 import { VNode } from "preact";
-import render from "preact-render-to-string";
 import { LangCode, Mime } from "./types";
-import { xmlHeader } from "./utils";
+import { renderToXml, xmlHeader } from "./utils";
 
 export interface ManifestContent {
   id: string;
@@ -77,5 +76,5 @@ function ContentOpf({
 }
 
 export function contentOpf(props: Props): string {
-  return `${xmlHeader}${render(<ContentOpf {...props} />)}`;
+  return `${xmlHeader}${renderToXml(<ContentOpf {...props} />)}`;
 }

@@ -1,6 +1,5 @@
 import { VNode } from "preact";
-import render from "preact-render-to-string";
-import { xmlHeader } from "./utils";
+import { renderToXml, xmlHeader } from "./utils";
 
 interface Props {
   contentOpf?: string;
@@ -23,5 +22,5 @@ function ContainerXml({ contentOpf = "OEBPS/content.opf" }: Props): VNode {
 }
 
 export function containerXml(props: Props = {}): string {
-  return `${xmlHeader}${render(<ContainerXml {...props} />)}`;
+  return `${xmlHeader}${renderToXml(<ContainerXml {...props} />)}`;
 }

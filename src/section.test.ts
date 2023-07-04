@@ -93,7 +93,7 @@ test("missing image remove", () => {
     images: new Map(),
     missingImage: "remove",
   });
-  expect(sect).toContain("<body></body>");
+  expect(sect).toContain("<body />");
 });
 
 test("missing image ignore", () => {
@@ -131,9 +131,10 @@ test("comments", () => {
 test("full document", () => {
   const sect = section({
     title: "title",
-    content: "<!doctype html><html><body><p>some text</p></body></html>",
-    images: new Map(),
+    content: `<!doctype html><html><body><p>some text</p><img src="img.png"></body></html>`,
+    images: new Map([["img.png", "img.png"]]),
     missingImage: "error",
   });
   expect(sect).toContain("some text");
+  expect(sect).toContain(`<img src="img.png" />`);
 });

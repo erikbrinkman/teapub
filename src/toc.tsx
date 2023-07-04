@@ -1,6 +1,5 @@
 import { VNode } from "preact";
-import render from "preact-render-to-string";
-import { xmlHeader } from "./utils";
+import { renderToXml, xmlHeader } from "./utils";
 
 const ncxHeader = `<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">`;
 
@@ -58,5 +57,5 @@ function TocNcx({ uid, title, author, sections }: Props): VNode {
 }
 
 export function tocNcx(props: Props): string {
-  return `${xmlHeader}${ncxHeader}${render(<TocNcx {...props} />)}`;
+  return `${xmlHeader}${ncxHeader}${renderToXml(<TocNcx {...props} />)}`;
 }

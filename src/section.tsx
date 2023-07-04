@@ -1,7 +1,6 @@
 import { DefaultTreeAdapterMap, parseFragment } from "parse5";
 import { ComponentChild, VNode, h } from "preact";
-import render from "preact-render-to-string";
-import { xmlHeader } from "./utils";
+import { renderToXml, xmlHeader } from "./utils";
 
 type Node = DefaultTreeAdapterMap["node"];
 
@@ -229,5 +228,5 @@ function Section({
 }
 
 export function section(props: Props): string {
-  return `${xmlHeader}${xhtmlHeader}${render(<Section {...props} />)}`;
+  return `${xmlHeader}${xhtmlHeader}${renderToXml(<Section {...props} />)}`;
 }

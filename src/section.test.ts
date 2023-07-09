@@ -82,7 +82,7 @@ test("missing image error", () => {
       content: `<img src="missing" />`,
       images: new Map(),
       missingImage: "error",
-    })
+    }),
   ).toThrow("remapped images");
 });
 

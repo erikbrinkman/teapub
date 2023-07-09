@@ -46,7 +46,7 @@ function ContentOpf({
     <item id={id} href={href} media-type={mediaType} />
   ));
   const spineItems = content.map(({ id, spine }) =>
-    spine ? <itemref idref={id} /> : null
+    spine ? <itemref idref={id} /> : null,
   );
 
   return (

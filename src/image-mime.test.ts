@@ -27,6 +27,6 @@ test("getImageMimeExtension()", () => {
   expect(getImageMimeExtension("image/svg+xml")).toBe("svg");
   expect(getImageMimeExtension("image/png")).toBe("png");
   expect(() => getImageMimeExtension("image/unknown" as never)).toThrow(
-    "invalid"
+    "invalid",
   );
 });

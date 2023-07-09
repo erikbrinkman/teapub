@@ -34,7 +34,7 @@ async function wrapper(options) {
   const { dir, base } = parse(outfile);
   console.log(
     chalk.white(`\n  ${dir}/`) + chalk.bold(`${base}`),
-    chalk.cyan(` ${(size / 1024).toFixed(1)}kb`)
+    chalk.cyan(` ${(size / 1024).toFixed(1)}kb`),
   );
   return res;
 }

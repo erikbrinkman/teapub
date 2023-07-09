@@ -144,7 +144,7 @@ export async function render({
     const { title } = sect;
     oebps.file(
       href,
-      section({ ...sect, images: remapping, missingImage, cssFile })
+      section({ ...sect, images: remapping, missingImage, cssFile }),
     );
     manifestItems.push({
       id,
@@ -178,7 +178,7 @@ export async function render({
       lang,
       uid,
       content: manifestItems,
-    })
+    }),
   );
   return await zip.generateAsync({ type: "uint8array" });
 }

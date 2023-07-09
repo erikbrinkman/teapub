@@ -147,7 +147,7 @@ const allowedTags = new Set([
 export function convert(
   node: Node,
   images: Map<string, string>,
-  options: { missingImage: MissingImage }
+  options: { missingImage: MissingImage },
 ): ComponentChild {
   if ("tagName" in node) {
     // element : process it and children
@@ -156,7 +156,7 @@ export function convert(
     const attributes = Object.fromEntries(
       node.attrs
         .filter(({ name }) => allowedAttributes.has(name))
-        .map(({ name, value }) => [name, value])
+        .map(({ name, value }) => [name, value]),
     );
 
     // remap images
@@ -167,7 +167,7 @@ export function convert(
         attributes["src"] = src;
       } else if (missingImage === "error") {
         throw new Error(
-          `img src '${attributes["src"]}' wasn't in remapped images`
+          `img src '${attributes["src"]}' wasn't in remapped images`,
         );
       } else if (missingImage === "remove") {
         return null;
@@ -175,7 +175,7 @@ export function convert(
     }
 
     const children = node.childNodes.map((child) =>
-      convert(child, images, options)
+      convert(child, images, options),
     );
     if (!allowedTags.has(node.nodeName.toLowerCase())) {
       // remove node but keep children
@@ -195,7 +195,7 @@ export function convert(
   } else {
     // doc or fragment : iterate over children
     const children = node.childNodes.map((child) =>
-      convert(child, images, options)
+      convert(child, images, options),
     );
     return <>{children}</>;
   }

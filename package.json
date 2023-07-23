@@ -48,7 +48,7 @@
     "@babel/preset-typescript": "^7.22.5",
     "@babel/types": "^7.22.5",
     "@types/jest": "^29.5.3",
-    "@types/node": "^20.4.2",
+    "@types/node": "^20.4.4",
     "@types/sharp": "^0.32.0",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
@@ -57,7 +57,7 @@
     "@yarnpkg/pnpify": "^4.0.0-rc.48",
     "babel-jest": "^29.6.1",
     "chalk": "5.3.0",
-    "esbuild": "^0.18.14",
+    "esbuild": "^0.18.15",
     "esbuild-plugin-ignore": "^1.1.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
@@ -68,7 +68,7 @@
     "lorem-ipsum": "^2.0.8",
     "prettier": "^3.0.0",
     "prettier-plugin-organize-imports": "^3.2.3",
-    "sharp": "^0.32.3",
+    "sharp": "^0.32.4",
     "typedoc": "^0.24.8",
     "typescript": "^5.1.6"
   },
@@ -205,5 +205,5 @@
       ]
     }
   },
-  "packageManager": "yarn@3.6.0"
+  "packageManager": "yarn@3.6.1"
 }

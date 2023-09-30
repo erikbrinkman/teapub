@@ -200,14 +200,14 @@ declare module "preact/src/jsx" {
   namespace JSXInternal {
     interface HTMLAttributes {
       xmlns?: string;
-      "xml:lang"?: string;
+      xmlLang?: string;
     }
 
     interface IntrinsicElements {
       ncx: {
         children: ComponentChildren;
         xmlns: string;
-        "xml:lang": LangCode;
+        xmlLang: LangCode;
         version: string;
       };
       navMap: { children: ComponentChildren };
@@ -227,7 +227,7 @@ declare module "preact/src/jsx" {
       package: {
         children: ComponentChildren;
         xmlns: string;
-        "xmlns:opf": string;
+        xmlnsOpf: string;
         version: string;
       };
       item: { id: string; href: string; "media-type": Mime };

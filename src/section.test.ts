@@ -7,6 +7,7 @@ test("basic", () => {
     images: new Map(),
     missingImage: "error",
   });
+  expect(sect).not.toContain("::");
   expect(sect).toContain("Custom Title");
   expect(sect).toContain("custom content");
 });

@@ -7,6 +7,7 @@ test("simplest", () => {
     lang: "en",
     content: [],
   });
+  expect(content).not.toContain("::");
   expect(content).toContain("1234");
   expect(content).toContain("custom title");
   expect(content).toContain("en");

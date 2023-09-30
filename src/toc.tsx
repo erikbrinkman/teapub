@@ -35,7 +35,7 @@ function TocNcx({ uid, title, author, sections }: Props): VNode {
   return (
     <ncx
       version="2005-1"
-      xml:lang="en"
+      xmlLang="en"
       xmlns="http://www.daisy.org/z3986/2005/ncx/"
     >
       <head>

@@ -52,12 +52,12 @@ function ContentOpf({
   return (
     <package
       xmlns="http://www.idpf.org/2007/opf"
-      xmlns:opf="http://www.idpf.org/2007/opf"
+      xmlnsOpf="http://www.idpf.org/2007/opf"
       version="3.0"
       unique-identifier="BookId"
     >
       {/* @ts-expect-error metadata now part of svg, so manual tags no longer work */}
-      <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <metadata xmlnsDc="http://purl.org/dc/elements/1.1/">
         <dc:identifier id="BookId">{uid}</dc:identifier>
         <dc:title>{title}</dc:title>
         <dc:language>{lang}</dc:language>

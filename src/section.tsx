@@ -213,7 +213,7 @@ function Section({
     <link type="text/css" rel="stylesheet" href={cssFile} />
   ) : null;
   return (
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlLang="en">
       <head>
         <meta
           http-equiv="Content-Type"

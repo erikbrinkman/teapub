@@ -6,6 +6,7 @@ test("simple", () => {
     title: "custom title",
     sections: [],
   });
+  expect(content).not.toContain("::");
   expect(content).toContain("1234");
   expect(content).toContain("custom title");
 });

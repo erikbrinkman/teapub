@@ -1,3 +1,11 @@
+/**
+ * A library for rendering epub files
+ *
+ * The entry point is the {@link render} function, which takes an object iog
+ * {@link RenderOptions}.
+ *
+ * @packageDocumentation
+ */
 import JsZip from "jszip";
 import { v4 as uuid4 } from "uuid";
 import { containerXml } from "./container";

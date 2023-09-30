@@ -128,6 +128,16 @@ test("comments", () => {
   expect(sect).toContain("I'm not");
 });
 
+test("pre", () => {
+  const sect = section({
+    title: "title",
+    content: "<pre>a<span>b</span>c</pre>",
+    images: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).toContain("a<span>b</span>c");
+});
+
 test("full document", () => {
   const sect = section({
     title: "title",
@@ -136,5 +146,5 @@ test("full document", () => {
     missingImage: "error",
   });
   expect(sect).toContain("some text");
-  expect(sect).toContain(`<img src="img.png" />`);
+  expect(sect).toMatch(/<img\s+src="img.png"\s+\/>/);
 });

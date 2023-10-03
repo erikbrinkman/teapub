@@ -50,7 +50,7 @@ test("minimal", async () => {
 test("advanced", async () => {
   // generate content
   const sections = [];
-  const images: Record<string, ImageData> = {};
+  const images = new Map<string, ImageData>();
   for (let i = 0; i < 4; ++i) {
     // text content
     const title = loremIpsum({ count: 2, units: "words" });
@@ -64,7 +64,10 @@ test("advanced", async () => {
     const imageName = `[[replace_${i}]].png`;
     const data = await randomImage();
     array.push(`<img src="${imageName}"></img>`);
-    images[imageName] = { data, mime: i % 2 === 0 ? "image/png" : undefined };
+    images.set(imageName, {
+      data,
+      mime: i % 2 === 0 ? "image/png" : undefined,
+    });
 
     // write
     const content = array.join("");

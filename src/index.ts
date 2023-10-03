@@ -80,7 +80,7 @@ export interface RenderOptions {
    * If an `img` tag appears in sections, its `src` attribute must be present
    * in this record.
    */
-  images?: Record<string, ImageData> | undefined;
+  images?: Map<string, ImageData> | undefined;
   /** custom global css to apply */
   css?: string;
   /** how to handle missing images */
@@ -102,7 +102,7 @@ export async function render({
   uid = uuid4(),
   lang = "en",
   sections,
-  images = {},
+  images = new Map(),
   css,
   missingImage = "error",
 }: RenderOptions): Promise<Uint8Array> {
@@ -117,8 +117,9 @@ export async function render({
 
   // add images
   const remapping = new Map<string, string>();
-  for (const [i, [src, { data, mime }]] of Object.entries(images).entries()) {
-    const id = `img_${i}`;
+  let i = 0;
+  for (const [src, { data, mime }] of images) {
+    const id = `img_${i++}`;
     const mediaType = mime ?? getImageMimeType(src);
     const ext = getImageMimeExtension(mediaType);
     const href = `images/${id}.${ext}`;

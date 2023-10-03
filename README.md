@@ -45,7 +45,7 @@ const buffer = await render({
     title: "section title",
     content: `<img src="myfile.jpg"></img>`,
   }],
-  images: { "myfile.jpg": { data } },
+  images: new Map([["myfile.jpg", { data }]]),
 });
 ```
 

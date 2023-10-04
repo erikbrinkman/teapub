@@ -143,62 +143,76 @@ const allowedTags = new Set([
   "var",
 ]);
 
+class Converter {
+  constructor(
+    private images: Map<string, string>,
+    private missingImage: MissingImage,
+  ) {}
+
+  /** convert node-html-parser node to preact vnode */
+  convert(node: Node, inSvg: boolean): ComponentChild {
+    if ("tagName" in node) {
+      // element : process it and children
+      // this silly trick is necessary to remove Elements first because the
+      // default typings don't fit a proper discriminant union
+
+      // don't modify svgs as we assume everything is valid
+      const isSvg = inSvg || node.nodeName === "svg";
+      const attributes = Object.fromEntries(
+        node.attrs
+          .filter(({ name }) => isSvg || allowedAttributes.has(name))
+          .map(({ name, value }) => [name, value]),
+      );
+
+      // remap images
+      if (node.nodeName === "img") {
+        const src = this.images.get(decodeURIComponent(attributes["src"]));
+        if (src !== undefined) {
+          attributes["src"] = src;
+        } else if (this.missingImage === "error") {
+          throw new Error(
+            `img src '${attributes["src"]}' wasn't in remapped images`,
+          );
+        } else if (this.missingImage === "remove") {
+          return null;
+        }
+      }
+
+      const children = node.childNodes.map((child) =>
+        this.convert(child, isSvg),
+      );
+      if (!isSvg && !allowedTags.has(node.nodeName.toLowerCase())) {
+        // remove node but keep children
+        return <>{children}</>;
+      } else {
+        return h(node.nodeName.toLowerCase(), attributes, children);
+      }
+    } else if (
+      node.nodeName === "#comment" ||
+      node.nodeName === "#documentType"
+    ) {
+      // comment or document type : ignore
+      return null;
+    } else if (node.nodeName === "#text") {
+      // text : preserve
+      return node.value;
+    } else {
+      // doc or fragment : iterate over children
+      const children = node.childNodes.map((child) =>
+        this.convert(child, inSvg),
+      );
+      return <>{children}</>;
+    }
+  }
+}
+
 /** convert node-html-parser node to preact vnode */
 export function convert(
   node: Node,
   images: Map<string, string>,
-  options: { missingImage: MissingImage },
+  { missingImage }: { missingImage: MissingImage },
 ): ComponentChild {
-  if ("tagName" in node) {
-    // element : process it and children
-    // this silly trick is necessary to remove Elements first because the
-    // default typings don't fit a proper discriminant union
-    const attributes = Object.fromEntries(
-      node.attrs
-        .filter(({ name }) => allowedAttributes.has(name))
-        .map(({ name, value }) => [name, value]),
-    );
-
-    // remap images
-    if (node.nodeName === "img") {
-      const { missingImage } = options;
-      const src = images.get(decodeURIComponent(attributes["src"]));
-      if (src !== undefined) {
-        attributes["src"] = src;
-      } else if (missingImage === "error") {
-        throw new Error(
-          `img src '${attributes["src"]}' wasn't in remapped images`,
-        );
-      } else if (missingImage === "remove") {
-        return null;
-      }
-    }
-
-    const children = node.childNodes.map((child) =>
-      convert(child, images, options),
-    );
-    if (!allowedTags.has(node.nodeName.toLowerCase())) {
-      // remove node but keep children
-      return <>{children}</>;
-    } else {
-      return h(node.nodeName.toLowerCase(), attributes, children);
-    }
-  } else if (
-    node.nodeName === "#comment" ||
-    node.nodeName === "#documentType"
-  ) {
-    // comment or document type : ignore
-    return null;
-  } else if (node.nodeName === "#text") {
-    // text : preserve
-    return node.value;
-  } else {
-    // doc or fragment : iterate over children
-    const children = node.childNodes.map((child) =>
-      convert(child, images, options),
-    );
-    return <>{children}</>;
-  }
+  return new Converter(images, missingImage).convert(node, false);
 }
 
 function Section({

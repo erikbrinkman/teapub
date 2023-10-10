@@ -6,7 +6,7 @@ export type ImageMime = `image/${"png" | "jpeg" | "gif" | "svg+xml"}`;
 export type Mime =
   | ImageMime
   | `application/${"xhtml+xml" | "x-dtbncx+xml" | "oebps-package+xml"}`
-  | "text/css";
+  | `text/${"css" | "html"}`;
 
 /** A valid iso two letter language code */
 export type LangCode =

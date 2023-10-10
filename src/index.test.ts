@@ -51,6 +51,11 @@ test("advanced", async () => {
   // generate content
   const sections = [];
   const images = new Map<string, ImageData>();
+  const frame = `
+<!doctype html>
+<html><head></head><body><p>inside frame</p></body></html>
+  `;
+  const frames = new Map<string, string>([["cid:frame", frame]]);
   for (let i = 0; i < 4; ++i) {
     // text content
     const title = loremIpsum({ count: 2, units: "words" });
@@ -59,6 +64,7 @@ test("advanced", async () => {
       const [first, ...rest] = par.split(" ");
       return `<p><a href="#">${first}</a> ${rest.join(" ")}</p>`;
     });
+    array.push(`<iframe src="cid:frame"></iframe>`);
 
     // image
     const imageName = `[[replace_${i}]].png`;
@@ -88,6 +94,7 @@ test("advanced", async () => {
     copyright: "© today",
     sections,
     images,
+    frames,
     css: "a { text-decoration: none; }",
   });
   expect(buff.length).toBeGreaterThan(0);

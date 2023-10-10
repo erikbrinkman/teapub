@@ -78,12 +78,20 @@ export interface RenderOptions {
    * images to include in the epub
    *
    * If an `img` tag appears in sections, its `src` attribute must be present
-   * in this record.
+   * in this map.
    */
   images?: Map<string, ImageData> | undefined;
+  /**
+   * iframes to include in the epub
+   *
+   * If an `iframe` tag appears in sections, its `src` attribute must be present
+   * in this map. The value must be an xhtml frame document, unlike sections,
+   * this will not be converted to valid xhtml.
+   */
+  frames?: Map<string, string> | undefined;
   /** custom global css to apply */
   css?: string;
-  /** how to handle missing images */
+  /** how to handle missing images and iframes */
   missingImage?: MissingImage;
 }
 
@@ -103,6 +111,7 @@ export async function render({
   lang = "en",
   sections,
   images = new Map(),
+  frames = new Map(),
   css,
   missingImage = "error",
 }: RenderOptions): Promise<Uint8Array> {
@@ -114,23 +123,43 @@ export async function render({
   const oebps = zip.folder("OEBPS")!;
   const manifestItems: ManifestContent[] = [];
   const tocItems: SectionInfo[] = [];
+  const remapping = new Map<string, string>();
 
   // add images
-  const remapping = new Map<string, string>();
-  let i = 0;
-  for (const [src, { data, mime }] of images) {
-    const id = `img_${i++}`;
-    const mediaType = mime ?? getImageMimeType(src);
-    const ext = getImageMimeExtension(mediaType);
-    const href = `images/${id}.${ext}`;
-    oebps.file(href, data, { binary: true });
-    remapping.set(src, href);
-    manifestItems.push({
-      id,
-      href,
-      mediaType,
-      spine: false,
-    });
+  {
+    let i = 0;
+    for (const [src, { data, mime }] of images) {
+      const id = `img_${i++}`;
+      const mediaType = mime ?? getImageMimeType(src);
+      const ext = getImageMimeExtension(mediaType);
+      const href = `images/${id}.${ext}`;
+      oebps.file(href, data, { binary: true });
+      remapping.set(src, href);
+      manifestItems.push({
+        id,
+        href,
+        mediaType,
+        spine: false,
+      });
+    }
+  }
+
+  // add frames
+  {
+    let i = 0;
+    for (const [src, content] of frames) {
+      const id = `frame_${i++}.xhtml`;
+      const mediaType = "text/html";
+      const href = `frames/${id}.html`;
+      oebps.file(href, content);
+      remapping.set(src, href);
+      manifestItems.push({
+        id,
+        href,
+        mediaType,
+        spine: false,
+      });
+    }
   }
 
   // add css
@@ -151,10 +180,7 @@ export async function render({
     const id = `section_${i}`;
     const href = `${id}.xhtml`;
     const { title } = sect;
-    oebps.file(
-      href,
-      section({ ...sect, images: remapping, missingImage, cssFile }),
-    );
+    oebps.file(href, section({ ...sect, remapping, missingImage, cssFile }));
     manifestItems.push({
       id,
       href,

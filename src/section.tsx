@@ -8,7 +8,7 @@ type Node = DefaultTreeAdapterMap["node"];
  * how to handle missing images
  *
  * A missing image is an `<img />` in sections whose `src` attribute isn't a
- * key in `images`.
+ * key in `remapping`.
  * - `"error"` : throws and error
  * - `"ignore"` : do nothing, keep the `<img />` element
  * - `"remove"` : filter the `<img />` element
@@ -18,7 +18,7 @@ export type MissingImage = "error" | "ignore" | "remove";
 interface Props {
   title: string;
   content: string;
-  images: Map<string, string>;
+  remapping: Map<string, string>;
   missingImage: MissingImage;
   cssFile?: string;
 }
@@ -145,7 +145,7 @@ const allowedTags = new Set([
 
 class Converter {
   constructor(
-    private images: Map<string, string>,
+    private remapping: Map<string, string>,
     private missingImage: MissingImage,
   ) {}
 
@@ -164,14 +164,25 @@ class Converter {
           .map(({ name, value }) => [name, value]),
       );
 
-      // remap images
+      // remap images and frames
       if (node.nodeName === "img") {
-        const src = this.images.get(decodeURIComponent(attributes["src"]));
+        const src = this.remapping.get(decodeURIComponent(attributes["src"]));
         if (src !== undefined) {
           attributes["src"] = src;
         } else if (this.missingImage === "error") {
           throw new Error(
-            `img src '${attributes["src"]}' wasn't in remapped images`,
+            `img src '${attributes["src"]}' wasn't in remapped items`,
+          );
+        } else if (this.missingImage === "remove") {
+          return null;
+        }
+      } else if (node.nodeName === "iframe") {
+        const src = this.remapping.get(decodeURIComponent(attributes["src"]));
+        if (src !== undefined) {
+          attributes["src"] = src;
+        } else if (this.missingImage === "error") {
+          throw new Error(
+            `iframe src '${attributes["src"]}' wasn't in remapped items`,
           );
         } else if (this.missingImage === "remove") {
           return null;
@@ -209,20 +220,20 @@ class Converter {
 /** convert node-html-parser node to preact vnode */
 export function convert(
   node: Node,
-  images: Map<string, string>,
+  remapping: Map<string, string>,
   { missingImage }: { missingImage: MissingImage },
 ): ComponentChild {
-  return new Converter(images, missingImage).convert(node, false);
+  return new Converter(remapping, missingImage).convert(node, false);
 }
 
 function Section({
   title,
   content,
-  images,
+  remapping,
   missingImage,
   cssFile,
 }: Props): VNode {
-  const vnodes = convert(parseFragment(content), images, { missingImage });
+  const vnodes = convert(parseFragment(content), remapping, { missingImage });
   const cssHeader = cssFile ? (
     <link type="text/css" rel="stylesheet" href={cssFile} />
   ) : null;

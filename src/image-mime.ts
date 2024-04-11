@@ -18,13 +18,15 @@ export function isImageMimeType(str: string): str is ImageMime {
  * Throws an Error is if extension doesn't correspond to an {@link ImageMime}.
  */
 export function getImageMimeType(href: string): ImageMime {
-  if (href.endsWith(".png")) {
+  const src = href.split("?")[0];
+
+  if (src.endsWith(".png")) {
     return "image/png";
-  } else if (href.endsWith(".gif")) {
+  } else if (src.endsWith(".gif")) {
     return "image/gif";
-  } else if (href.endsWith(".svg")) {
+  } else if (src.endsWith(".svg")) {
     return "image/svg+xml";
-  } else if (href.endsWith(".jpg") || href.endsWith(".jpeg")) {
+  } else if (src.endsWith(".jpg") || src.endsWith(".jpeg")) {
     return "image/jpeg";
   } else {
     throw new Error(`can't convert '${href}' to a mime type`);

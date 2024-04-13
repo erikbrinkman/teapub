@@ -18,7 +18,7 @@ export function isImageMimeType(str: string): str is ImageMime {
  * Throws an Error is if extension doesn't correspond to an {@link ImageMime}.
  */
 export function getImageMimeType(href: string): ImageMime {
-  const src = href.split("?")[0].toLowerCase();
+  const [src] = href.toLowerCase().split("?", 1);
 
   if (src.endsWith(".png")) {
     return "image/png";

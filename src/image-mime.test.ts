@@ -18,6 +18,11 @@ test("getImageMimeType()", () => {
   expect(getImageMimeType(".gif")).toBe("image/gif");
   expect(getImageMimeType("vector.svg")).toBe("image/svg+xml");
   expect(getImageMimeType("/dense.png")).toBe("image/png");
+  expect(
+    getImageMimeType(
+      "https://techcrunch.com/wp-content/uploads/2020/10/Google-Workspace-Icons.png?w=680",
+    ),
+  ).toBe("image/png");
   expect(() => getImageMimeType("error.exe")).toThrow("convert");
 });
 

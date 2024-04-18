@@ -66,6 +66,7 @@ function ContentOpf({
         {descr}
         {subs}
         {copy}
+        {/* eslint-disable-next-line spellcheck/spell-checker */}
         <meta property="dcterms:modified">{modified}</meta>
       </metadata>
       <manifest>{manifestItems}</manifest>

@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test";
 import { containerXml } from "./container";
 
 test("default", () => {

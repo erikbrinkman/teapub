@@ -1,6 +1,6 @@
 import { ImageMime } from "./types";
 
-const mimeToExtension: Map<ImageMime, string> = new Map([
+const mimeToExtension = new Map<ImageMime, string>([
   ["image/png", "png"],
   ["image/gif", "gif"],
   ["image/svg+xml", "svg"],

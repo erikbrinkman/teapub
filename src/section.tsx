@@ -24,6 +24,7 @@ interface Props {
 }
 
 const xhtmlHeader = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">`;
+/* eslint-disable spellcheck/spell-checker */
 const allowedAttributes = new Set([
   "content",
   "alt",
@@ -142,6 +143,7 @@ const allowedTags = new Set([
   "tt",
   "var",
 ]);
+/* eslint-enable spellcheck/spell-checker */
 
 class Converter {
   constructor(
@@ -166,23 +168,23 @@ class Converter {
 
       // remap images and frames
       if (node.nodeName === "img") {
-        const src = this.remapping.get(decodeURIComponent(attributes["src"]));
+        const src = this.remapping.get(decodeURIComponent(attributes.src));
         if (src !== undefined) {
-          attributes["src"] = src;
+          attributes.src = src;
         } else if (this.missingImage === "error") {
           throw new Error(
-            `img src '${attributes["src"]}' wasn't in remapped items`,
+            `img src '${attributes.src}' wasn't in remapped items`,
           );
         } else if (this.missingImage === "remove") {
           return null;
         }
       } else if (node.nodeName === "iframe") {
-        const src = this.remapping.get(decodeURIComponent(attributes["src"]));
+        const src = this.remapping.get(decodeURIComponent(attributes.src));
         if (src !== undefined) {
-          attributes["src"] = src;
+          attributes.src = src;
         } else if (this.missingImage === "error") {
           throw new Error(
-            `iframe src '${attributes["src"]}' wasn't in remapped items`,
+            `iframe src '${attributes.src}' wasn't in remapped items`,
           );
         } else if (this.missingImage === "remove") {
           return null;
@@ -240,10 +242,12 @@ function Section({
   return (
     <html xmlns="http://www.w3.org/1999/xhtml" xmlLang="en">
       <head>
+        {/* eslint-disable spellcheck/spell-checker */}
         <meta
           http-equiv="Content-Type"
           content="application/xhtml+xml; charset=utf-8"
         />
+        {/* eslint-enable spellcheck/spell-checker */}
         {cssHeader}
         <title>{title}</title>
       </head>

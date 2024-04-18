@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test";
 import { section } from "./section";
 
 test("basic", () => {

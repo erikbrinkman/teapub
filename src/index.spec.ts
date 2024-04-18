@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test";
 import { writeFile } from "fs/promises";
 import JsZip from "jszip";
 import { loremIpsum } from "lorem-ipsum";
@@ -89,7 +90,7 @@ test("advanced", async () => {
     title: "Advanced Book Title",
     author: "Lorem Ipsum",
     publisher: "Advanced Publishing House",
-    description: "A book about latin",
+    description: "A book about Latin",
     subjects: ["lorem", "ipsum"],
     copyright: "© today",
     sections,

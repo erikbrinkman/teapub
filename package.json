@@ -16,23 +16,19 @@
     "email": "erik.brinkman@gmail.com"
   },
   "license": "MIT",
+  "type": "module",
   "types": "dist/index.d.ts",
-  "module": "bundle/teapub.esm.min.js",
-  "main": "bundle/teapub.cjs.min.js",
-  "unpkg": "bundle/teapub.iife.min.js",
+  "module": "dist/teapub.esm.min.js",
   "files": [
-    "bundle/*.js",
     "dist/**/*.js",
     "dist/**/*.d.ts"
   ],
   "scripts": {
-    "fmt": "pnpify prettier --cache --write 'src/**/*.{ts,tsx}' '*.json' bundle.mjs",
-    "lint": "pnpify tsc && eslint --cache 'src/**/*.{ts,tsx}' && pnpify typedoc --emit none",
-    "test": "jest --coverage",
-    "doc": "pnpify typedoc",
-    "build": "pnpify tsc -p tsconfig.build.json",
-    "bundle": "node bundle.mjs",
-    "prepack": "yarn lint && yarn test && yarn build && yarn bundle"
+    "fmt": "prettier --cache --write 'src/**/*.{ts,tsx}' '*.json' '*.js'",
+    "lint": "tsc && eslint --cache 'src/**/*.{ts,tsx}' && typedoc --emit none",
+    "doc": "typedoc",
+    "export": "tsc -p tsconfig.build.json && bun build src/index.ts --minify --outfile dist/teapub.esm.min.js",
+    "prepack": "bun lint && bun test --coverage && bun export"
   },
   "dependencies": {
     "jszip": "^3.10.1",
@@ -42,169 +38,20 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
-    "@babel/plugin-transform-react-jsx": "^7.23.4",
-    "@babel/preset-env": "^7.23.9",
-    "@babel/preset-typescript": "^7.23.3",
-    "@babel/types": "^7.23.9",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.19",
+    "@eslint/js": "^9.0.0",
+    "@types/bun": "^1.1.0",
     "@types/sharp": "^0.32.0",
     "@types/uuid": "^9.0.8",
-    "@typescript-eslint/eslint-plugin": "^7.0.2",
-    "@typescript-eslint/parser": "^7.0.2",
-    "@yarnpkg/esbuild-plugin-pnp": "^3.0.0-rc.15",
-    "@yarnpkg/pnpify": "^4.0.1",
-    "babel-jest": "^29.7.0",
-    "chalk": "^5.3.0",
-    "esbuild": "^0.20.1",
-    "esbuild-plugin-ignore": "^1.1.1",
-    "eslint": "^8.56.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^27.9.0",
     "eslint-plugin-spellcheck": "^0.0.20",
     "eslint-plugin-tsdoc": "^0.2.17",
-    "jest": "^29.7.0",
     "lorem-ipsum": "^2.0.8",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "sharp": "^0.33.2",
     "typedoc": "^0.25.8",
-    "typescript": "^5.3.3"
-  },
-  "resolutions": {
-    "minimist": "1.2.6"
-  },
-  "prettier": {
-    "plugins": [
-      "prettier-plugin-organize-imports"
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node"
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ],
-      "@babel/preset-typescript"
-    ],
-    "plugins": [
-      [
-        "@babel/transform-react-jsx",
-        {
-          "runtime": "automatic",
-          "importSource": "preact",
-          "throwIfNamespace": false
-        }
-      ]
-    ]
-  },
-  "eslintConfig": {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "jest",
-      "spellcheck",
-      "eslint-plugin-tsdoc"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:@typescript-eslint/recommended-requiring-type-checking",
-      "plugin:jest/recommended",
-      "prettier"
-    ],
-    "parserOptions": {
-      "project": [
-        "./tsconfig.json"
-      ]
-    },
-    "env": {
-      "node": true
-    },
-    "rules": {
-      "tsdoc/syntax": "error",
-      "@typescript-eslint/no-inferrable-types": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          "varsIgnorePattern": "^_+$"
-        }
-      ],
-      "prefer-const": [
-        "error",
-        {
-          "destructuring": "all"
-        }
-      ],
-      "no-warning-comments": [
-        "error",
-        {
-          "terms": [
-            "fixme"
-          ],
-          "location": "anywhere"
-        }
-      ],
-      "spellcheck/spell-checker": [
-        "error",
-        {
-          "identifiers": false,
-          "skipWords": [
-            "accesskey",
-            "basefont",
-            "blockquote",
-            "charset",
-            "colgroup",
-            "colspan",
-            "contenteditable",
-            "contextmenu",
-            "dcterms",
-            "dropzone",
-            "dtbncx",
-            "epub",
-            "href",
-            "hreflang",
-            "iframe",
-            "iframes",
-            "iife",
-            "inlist",
-            "itemid",
-            "itemref",
-            "itemscope",
-            "itemtype",
-            "jpeg",
-            "lang",
-            "latin",
-            "noscript",
-            "oebps",
-            "opendocument",
-            "opentype",
-            "preact",
-            "rowspan",
-            "samp",
-            "tabindex",
-            "tbody",
-            "teapub",
-            "tfoot",
-            "thead",
-            "typeof",
-            "xhtml",
-            "xmlns"
-          ],
-          "minLength": 4
-        }
-      ]
-    }
-  },
-  "packageManager": "yarn@4.1.0"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.0"
+  }
 }

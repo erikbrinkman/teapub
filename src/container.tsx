@@ -7,10 +7,12 @@ interface Props {
 
 function ContainerXml({ contentOpf = "OEBPS/content.opf" }: Props): VNode {
   return (
+    /* eslint-disable spellcheck/spell-checker */
     <container
       xmlns="urn:oasis:names:tc:opendocument:xmlns:container"
       version="1.0"
     >
+      {/* eslint-enable spellcheck/spell-checker */}
       <rootfiles>
         <rootfile
           full-path={contentOpf}

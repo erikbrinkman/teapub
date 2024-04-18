@@ -1,3 +1,4 @@
+import { expect, test } from "bun:test";
 import { contentOpf } from "./content";
 
 test("simplest", () => {

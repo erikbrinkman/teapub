@@ -16,4 +16,5 @@ jobs:
     - run: bun install
     - run: bun fmt --check
     - run: bun lint
+    - run: bun test
     - run: bun export

@@ -32,8 +32,6 @@ function ContentOpf({
   lang,
   content,
 }: Props): VNode {
-  const modified = new Date().toISOString();
-
   const auth = author ? <dc:creator>{author}</dc:creator> : null;
   const publish = publisher ? <dc:publisher>{publisher}</dc:publisher> : null;
   const descr = description ? (
@@ -66,8 +64,6 @@ function ContentOpf({
         {descr}
         {subs}
         {copy}
-        {/* eslint-disable-next-line spellcheck/spell-checker */}
-        <meta property="dcterms:modified">{modified}</meta>
       </metadata>
       <manifest>{manifestItems}</manifest>
       <spine>{spineItems}</spine>

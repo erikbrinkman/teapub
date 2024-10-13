@@ -1,3 +1,4 @@
+import leven from "leven";
 import { DefaultTreeAdapterMap, parseFragment } from "parse5";
 import { ComponentChild, VNode, h } from "preact";
 import { renderToXml, xmlHeader } from "./utils";
@@ -10,10 +11,11 @@ type Node = DefaultTreeAdapterMap["node"];
  * A missing image is an `<img />` in sections whose `src` attribute isn't a
  * key in `remapping`.
  * - `"error"` : throws and error
+ * - `"warn"` : logs a warning with information about the missing image
  * - `"ignore"` : do nothing, keep the `<img />` element
  * - `"remove"` : filter the `<img />` element
  */
-export type MissingImage = "error" | "ignore" | "remove";
+export type MissingImage = "error" | "warn" | "ignore" | "remove";
 
 interface Props {
   title: string;
@@ -145,6 +147,23 @@ const allowedTags = new Set([
 ]);
 /* eslint-enable spellcheck/spell-checker */
 
+function findClosest(
+  haystack: Iterable<string>,
+  needle: string,
+): string | undefined {
+  let closest = undefined;
+  let cdist = 2;
+  for (const potential of haystack) {
+    const dist =
+      leven(potential, needle) / Math.max(potential.length, needle.length);
+    if (dist < cdist) {
+      cdist = dist;
+      closest = potential;
+    }
+  }
+  return closest;
+}
+
 class Converter {
   constructor(
     private remapping: Map<string, string>,
@@ -168,23 +187,37 @@ class Converter {
 
       // remap images and frames
       if (node.nodeName === "img") {
-        const src = this.remapping.get(decodeURIComponent(attributes.src));
+        const searchSrc = decodeURIComponent(attributes.src);
+        const src = this.remapping.get(searchSrc);
         if (src !== undefined) {
           attributes.src = src;
         } else if (this.missingImage === "error") {
-          throw new Error(
-            `img src '${attributes.src}' wasn't in remapped items`,
+          throw new Error(`img src '${searchSrc}' wasn't in remapped items`);
+        } else if (this.missingImage === "warn") {
+          const closest = findClosest(this.remapping.keys(), searchSrc);
+          const suffix = closest
+            ? `the closest match was '${closest}'`
+            : "there were no remapped items";
+          console.warn(
+            `img src '${searchSrc}' wasn't in remapped items; ${suffix}`,
           );
         } else if (this.missingImage === "remove") {
           return null;
         }
       } else if (node.nodeName === "iframe") {
-        const src = this.remapping.get(decodeURIComponent(attributes.src));
+        const searchSrc = decodeURIComponent(attributes.src);
+        const src = this.remapping.get(searchSrc);
         if (src !== undefined) {
           attributes.src = src;
         } else if (this.missingImage === "error") {
-          throw new Error(
-            `iframe src '${attributes.src}' wasn't in remapped items`,
+          throw new Error(`iframe src '${searchSrc}' wasn't in remapped items`);
+        } else if (this.missingImage === "warn") {
+          const closest = findClosest(this.remapping.keys(), searchSrc);
+          const suffix = closest
+            ? `the closest match was '${closest}'`
+            : "there were no remapped items";
+          console.warn(
+            `iframe src '${searchSrc}' wasn't in remapped items; ${suffix}`,
           );
         } else if (this.missingImage === "remove") {
           return null;

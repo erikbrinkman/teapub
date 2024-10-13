@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { expect, spyOn, test } from "bun:test";
 import { section } from "./section";
 
 test("basic", () => {
@@ -86,6 +86,22 @@ test("missing image error", () => {
       missingImage: "error",
     }),
   ).toThrow("img src");
+});
+
+test("missing image warn", () => {
+  const spy = spyOn(console, "warn");
+  section({
+    title: "title",
+    content: `<img src="missing" />`,
+    remapping: new Map([["other", ""]]),
+    missingImage: "warn",
+  });
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy.mock.calls).toEqual([
+    [
+      "img src 'missing' wasn't in remapped items; the closest match was 'other'",
+    ],
+  ]);
 });
 
 test("missing image remove", () => {

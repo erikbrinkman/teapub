@@ -32,26 +32,26 @@
   },
   "dependencies": {
     "jszip": "^3.10.1",
-    "parse5": "^7.1.2",
-    "preact": "^10.19.5",
-    "preact-render-to-string": "^6.3.1",
-    "uuid": "^9.0.1"
+    "parse5": "^7.2.0",
+    "preact": "^10.24.2",
+    "preact-render-to-string": "^6.5.11",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
-    "@types/bun": "^1.1.0",
+    "@eslint/js": "^9.12.0",
+    "@types/bun": "^1.1.11",
     "@types/sharp": "^0.32.0",
-    "@types/uuid": "^9.0.8",
-    "eslint": "^9.0.0",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-spellcheck": "^0.0.20",
-    "eslint-plugin-tsdoc": "^0.2.17",
+    "eslint-plugin-tsdoc": "^0.3.0",
     "lorem-ipsum": "^2.0.8",
-    "prettier": "^3.2.5",
-    "prettier-plugin-organize-imports": "^3.2.4",
-    "sharp": "^0.33.2",
-    "typedoc": "^0.25.8",
-    "typescript": "^5.4.5",
-    "typescript-eslint": "^7.7.0"
+    "prettier": "^3.3.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "sharp": "^0.33.5",
+    "typedoc": "^0.26.9",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.1"
   }
 }

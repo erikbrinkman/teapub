@@ -1,4 +1,4 @@
-import { VNode } from "preact";
+import type { VNode } from "preact";
 import { renderToXml, xmlHeader } from "./utils";
 
 interface Props {

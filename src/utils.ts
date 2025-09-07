@@ -1,4 +1,4 @@
-import { VNode } from "preact";
+import type { VNode } from "preact";
 import render from "preact-render-to-string/jsx";
 
 export const xmlHeader = `<?xml version="1.0" encoding="utf-8"?>`;

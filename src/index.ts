@@ -9,15 +9,15 @@
 import JsZip from "jszip";
 import { v4 as uuid4 } from "uuid";
 import { containerXml } from "./container";
-import { contentOpf, ManifestContent } from "./content";
+import { contentOpf, type ManifestContent } from "./content";
 import {
   getImageMimeExtension,
   getImageMimeType,
   isImageMimeType,
 } from "./image-mime";
-import { MissingImage, section } from "./section";
-import { SectionInfo, tocNcx } from "./toc";
-import { ImageMime, LangCode } from "./types";
+import { type MissingImage, section } from "./section";
+import { type SectionInfo, tocNcx } from "./toc";
+import type { ImageMime, LangCode } from "./types";
 export { getImageMimeExtension, getImageMimeType, isImageMimeType };
 export type { ImageMime, LangCode, MissingImage };
 
@@ -164,7 +164,7 @@ export async function render({
   }
 
   // add css
-  let cssFile;
+  let cssFile: string | undefined;
   if (css) {
     cssFile = "style.css";
     oebps.file(cssFile, css);

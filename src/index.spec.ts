@@ -1,9 +1,8 @@
 import { expect, test } from "bun:test";
-import { writeFile } from "fs/promises";
 import JsZip from "jszip";
 import { loremIpsum } from "lorem-ipsum";
 import sharp from "sharp";
-import { ImageData, render } from ".";
+import { type ImageData, render } from ".";
 
 async function randomImage(): Promise<Uint8Array> {
   const buffer = await sharp({
@@ -45,7 +44,7 @@ test("minimal", async () => {
   expect(mimetype).toBe("application/epub+zip");
 
   // write for external verification
-  await writeFile("minimal.epub", buff);
+  await Bun.write("minimal.epub", buff);
 });
 
 test("advanced", async () => {
@@ -106,5 +105,5 @@ test("advanced", async () => {
   expect(mimetype).toBe("application/epub+zip");
 
   // write for external validation
-  await writeFile("advanced.epub", buff);
+  await Bun.write("advanced.epub", buff);
 });

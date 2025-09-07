@@ -1,5 +1,5 @@
-import { VNode } from "preact";
-import { LangCode, Mime } from "./types";
+import type { VNode } from "preact";
+import type { LangCode, Mime } from "./types";
 import { renderToXml, xmlHeader } from "./utils";
 
 export interface ManifestContent {

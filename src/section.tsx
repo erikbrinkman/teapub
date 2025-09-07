@@ -1,6 +1,6 @@
 import leven from "leven";
-import { DefaultTreeAdapterMap, parseFragment } from "parse5";
-import { ComponentChild, VNode, h } from "preact";
+import { type DefaultTreeAdapterMap, parseFragment } from "parse5";
+import { type ComponentChild, h, type VNode } from "preact";
 import { renderToXml, xmlHeader } from "./utils";
 
 type Node = DefaultTreeAdapterMap["node"];
@@ -151,7 +151,7 @@ function findClosest(
   haystack: Iterable<string>,
   needle: string,
 ): string | undefined {
-  let closest = undefined;
+  let closest: string | undefined;
   let cdist = 2;
   for (const potential of haystack) {
     const dist =
@@ -273,7 +273,7 @@ function Section({
     <link type="text/css" rel="stylesheet" href={cssFile} />
   ) : null;
   return (
-    <html xmlns="http://www.w3.org/1999/xhtml" xmlLang="en">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlLang="en" lang="en">
       <head>
         {/* eslint-disable spellcheck/spell-checker */}
         <meta

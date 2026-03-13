@@ -226,6 +226,47 @@ test("svg", () => {
   expect(svg).toContain(`d="`);
 });
 
+test("math", () => {
+  const sect = section({
+    title: "title",
+    content: `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msup><mi>x</mi><mn>2</mn></msup></mrow></math>`,
+    remapping: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).toContain(`xmlns="http://www.w3.org/1998/Math/MathML"`);
+  expect(sect).toContain(`display="block"`);
+  expect(sect).toContain("<mrow>");
+  expect(sect).toContain("<msup>");
+  expect(sect).toContain("<mi>x</mi>");
+  expect(sect).toContain("<mn>2</mn>");
+});
+
+test("math attributes", () => {
+  const sect = section({
+    title: "title",
+    content: `<math><mo stretchy="true" fence="true">(</mo><mi mathvariant="bold">A</mi></math>`,
+    remapping: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).toContain(`stretchy="true"`);
+  expect(sect).toContain(`fence="true"`);
+  expect(sect).toContain(`mathvariant="bold"`);
+});
+
+test("math nested in content", () => {
+  const sect = section({
+    title: "title",
+    content: `<p>The formula is <math><mi>x</mi></math> here</p>`,
+    remapping: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).toContain("<p>");
+  expect(sect).toContain("<math>");
+  expect(sect).toContain("<mi>x</mi>");
+  expect(sect).toContain("The formula is");
+  expect(sect).toContain("here");
+});
+
 test("full document", () => {
   const sect = section({
     title: "title",

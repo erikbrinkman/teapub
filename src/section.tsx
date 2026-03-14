@@ -171,17 +171,18 @@ class Converter {
   ) {}
 
   /** convert node-html-parser node to preact vnode */
-  convert(node: Node, inSvg: boolean): ComponentChild {
+  convert(node: Node, inForeign: boolean): ComponentChild {
     if ("tagName" in node) {
       // element : process it and children
       // this silly trick is necessary to remove Elements first because the
       // default typings don't fit a proper discriminant union
 
-      // don't modify svgs as we assume everything is valid
-      const isSvg = inSvg || node.nodeName === "svg";
+      // don't modify foreign content (svg, mathml) as we assume everything is valid
+      const isForeign =
+        inForeign || node.nodeName === "svg" || node.nodeName === "math";
       const attributes = Object.fromEntries(
         node.attrs
-          .filter(({ name }) => isSvg || allowedAttributes.has(name))
+          .filter(({ name }) => isForeign || allowedAttributes.has(name))
           .map(({ name, value }) => [name, value]),
       );
 
@@ -225,9 +226,9 @@ class Converter {
       }
 
       const children = node.childNodes.map((child) =>
-        this.convert(child, isSvg),
+        this.convert(child, isForeign),
       );
-      if (!isSvg && !allowedTags.has(node.nodeName.toLowerCase())) {
+      if (!isForeign && !allowedTags.has(node.nodeName.toLowerCase())) {
         // remove node but keep children
         return <>{children}</>;
       } else {
@@ -245,7 +246,7 @@ class Converter {
     } else {
       // doc or fragment : iterate over children
       const children = node.childNodes.map((child) =>
-        this.convert(child, inSvg),
+        this.convert(child, inForeign),
       );
       return <>{children}</>;
     }

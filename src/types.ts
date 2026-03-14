@@ -7,7 +7,8 @@ export type Mime =
   | ImageMime
   // eslint-disable-next-line spellcheck/spell-checker
   | `application/${"xhtml+xml" | "x-dtbncx+xml" | "oebps-package+xml"}`
-  | `text/${"css" | "html"}`;
+  | `text/${"css" | "html"}`
+  | "font/woff2";
 
 /** A valid iso two letter language code */
 export type LangCode =

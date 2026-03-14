@@ -89,6 +89,8 @@ export interface RenderOptions {
    * this will not be converted to valid xhtml.
    */
   frames?: Map<string, string> | undefined;
+  /** woff2 font files to embed, keyed by filename */
+  fonts?: Map<string, Uint8Array> | undefined;
   /** custom global css to apply */
   css?: string;
   // eslint-disable-next-line spellcheck/spell-checker
@@ -113,6 +115,7 @@ export async function render({
   sections,
   images = new Map(),
   frames = new Map(),
+  fonts = new Map(),
   css,
   missingImage = "error",
 }: RenderOptions): Promise<Uint8Array> {
@@ -127,40 +130,45 @@ export async function render({
   const remapping = new Map<string, string>();
 
   // add images
-  {
-    let i = 0;
-    for (const [src, { data, mime }] of images) {
-      const id = `img_${i++}`;
-      const mediaType = mime ?? getImageMimeType(src);
-      const ext = getImageMimeExtension(mediaType);
-      const href = `images/${id}.${ext}`;
-      oebps.file(href, data, { binary: true });
-      remapping.set(src, href);
-      manifestItems.push({
-        id,
-        href,
-        mediaType,
-        spine: false,
-      });
-    }
+  let iIdx = 0;
+  for (const [src, { data, mime }] of images) {
+    const id = `img_${iIdx++}`;
+    const mediaType = mime ?? getImageMimeType(src);
+    const ext = getImageMimeExtension(mediaType);
+    const href = `images/${id}.${ext}`;
+    oebps.file(href, data, { binary: true });
+    remapping.set(src, href);
+    manifestItems.push({
+      id,
+      href,
+      mediaType,
+      spine: false,
+    });
   }
 
   // add frames
-  {
-    let i = 0;
-    for (const [src, content] of frames) {
-      const id = `frame_${i++}.xhtml`;
-      const mediaType = "text/html";
-      const href = `frames/${id}.html`;
-      oebps.file(href, content);
-      remapping.set(src, href);
-      manifestItems.push({
-        id,
-        href,
-        mediaType,
-        spine: false,
-      });
-    }
+  let fIdx = 0;
+  for (const [src, content] of frames) {
+    const id = `frame_${fIdx++}.xhtml`;
+    const mediaType = "text/html";
+    const href = `frames/${id}.html`;
+    oebps.file(href, content);
+    remapping.set(src, href);
+    manifestItems.push({
+      id,
+      href,
+      mediaType,
+      spine: false,
+    });
+  }
+
+  // add fonts
+  let tIdx = 0;
+  for (const [name, data] of fonts) {
+    const id = `font_${tIdx++}`;
+    const href = `fonts/${name}`;
+    oebps.file(href, data, { binary: true });
+    manifestItems.push({ id, href, mediaType: "font/woff2", spine: false });
   }
 
   // add css

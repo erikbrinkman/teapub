@@ -18,8 +18,9 @@ import {
 import { type MissingImage, section } from "./section";
 import { type SectionInfo, tocNcx } from "./toc";
 import type { ImageMime, LangCode } from "./types";
-export { getImageMimeExtension, getImageMimeType, isImageMimeType };
+
 export type { ImageMime, LangCode, MissingImage };
+export { getImageMimeExtension, getImageMimeType, isImageMimeType };
 
 /**
  * An image to include in the epub

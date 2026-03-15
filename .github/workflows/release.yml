@@ -37,10 +37,8 @@ jobs:
           npm version ${{ inputs.bump }}
       - run: git push --follow-tags
 
-      # Publish to npm with provenance
+      # Publish to npm with provenance (authenticated via OIDC trusted publishing)
       - run: npm publish --provenance --access public --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # GitHub Release with auto-generated notes
       - run: gh release create "v$(jq -r .version package.json)" --generate-notes

@@ -44,6 +44,9 @@ jobs:
       - run: git push --follow-tags
 
       # Publish to npm with provenance (authenticated via OIDC trusted publishing)
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
       - run: npm publish --provenance --access public --ignore-scripts
 
       # GitHub Release with auto-generated notes

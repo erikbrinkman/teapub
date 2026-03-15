@@ -26,9 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v4
-        with:
-          registry-url: 'https://registry.npmjs.org'
       - run: bun install
 
       # Gate — fail fast before any side effects
@@ -44,6 +41,9 @@ jobs:
       - run: git push --follow-tags
 
       # Publish to npm with provenance (authenticated via OIDC trusted publishing)
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
       - run: npm publish --provenance --access public --ignore-scripts
 
       # GitHub Release with auto-generated notes

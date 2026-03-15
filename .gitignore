@@ -19,4 +19,5 @@ tsconfig.tsbuildinfo
 #############
 /dist
 /bundle
+/docs
 *.epub

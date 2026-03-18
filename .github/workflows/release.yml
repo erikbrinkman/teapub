@@ -33,18 +33,20 @@ jobs:
       - run: bun test
       - run: bun export
 
-      # Version bump → commit + tag
+      # Version bump → commit + tag (local only, not pushed yet)
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version ${{ inputs.bump }}
-      - run: git push --follow-tags
 
       # Publish to npm with provenance (authenticated via OIDC trusted publishing)
+      # Done before git push so a publish failure won't leave orphaned version bumps
       - uses: actions/setup-node@v4
         with:
           registry-url: 'https://registry.npmjs.org'
       - run: npm publish --provenance --access public --ignore-scripts
+
+      - run: git push --follow-tags
 
       # GitHub Release with auto-generated notes
       - run: gh release create "v$(jq -r .version package.json)" --generate-notes

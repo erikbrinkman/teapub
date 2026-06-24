@@ -1,16 +1,19 @@
 {
   "name": "teapub",
   "version": "3.3.0",
-  "description": "generate epubs using typescript and preact",
+  "description": "generate epubs using typescript",
   "keywords": [
-    "preact",
     "epub",
-    "typescript"
+    "ebook",
+    "epub-generator",
+    "typescript",
+    "javascript"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/erikbrinkman/teapub.git"
   },
+  "homepage": "https://erikbrinkman.github.io/teapub/",
   "author": {
     "name": "Erik Brinkman",
     "email": "erik.brinkman@gmail.com"

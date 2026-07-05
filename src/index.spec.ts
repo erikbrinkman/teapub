@@ -47,6 +47,32 @@ test("minimal", async () => {
   await Bun.write("minimal.epub", buff);
 });
 
+test("emits an epub 3 nav document and reproducible dcterms:modified", async () => {
+  const modified = new Date("2026-01-02T03:04:05.678Z");
+  const options = {
+    title: "Book",
+    modified,
+    sections: [{ title: "One", content: "<p>hi</p>" }],
+  };
+  const buff = await render(options);
+
+  const zip = await JsZip.loadAsync(buff);
+  const opf = await zip.file("OEBPS/content.opf")?.async("string");
+  expect(opf).toContain(`properties="nav"`);
+  expect(opf).toContain(`href="nav.xhtml"`);
+  expect(zip.file("OEBPS/nav.xhtml")).not.toBeNull();
+  expect(opf).toContain(
+    `property="dcterms:modified">2026-01-02T03:04:05Z</meta>`,
+  );
+  expect(opf).toContain(`toc="toc"`);
+
+  // pin uid so uuid randomness doesn't mask a reproducibility regression
+  const optionsWithUid = { ...options, uid: "fixed-uid" };
+  const first = await render(optionsWithUid);
+  const second = await render(optionsWithUid);
+  expect(first).toEqual(second);
+});
+
 test("frame manifest entry is a valid xhtml item", async () => {
   const frame = `<!doctype html><html><head></head><body><p>f</p></body></html>`;
   const buff = await render({

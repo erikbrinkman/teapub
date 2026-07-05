@@ -13,7 +13,12 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
+  # Run the same gate as pull requests
+  gate:
+    uses: ./.github/workflows/build.yml
+
   release:
+    needs: gate
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,16 +28,14 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
 
-      # Gate — fail fast before any side effects
-      - run: bun lint
-      - run: bun test
-      - run: bun export
-
       # Version bump → commit + tag (local only, not pushed yet)
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version ${{ inputs.bump }}
+
+      # Build dist for publishing (the gate already linted and tested)
+      - run: bun export
 
       # Publish via OIDC trusted publishing (no token), which needs npm >=
       # 11.5.1 — newer than the runner's, so upgrade first. Before git push so

@@ -1,5 +1,5 @@
 import { expect, spyOn, test } from "bun:test";
-import { section } from "./section";
+import { section } from "./section.js";
 
 test("basic", () => {
   const sect = section({

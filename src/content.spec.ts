@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { contentOpf } from "./content";
+import { contentOpf } from "./content.js";
 
 test("simplest", () => {
   const content = contentOpf({

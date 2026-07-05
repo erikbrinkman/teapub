@@ -20,8 +20,17 @@
   },
   "license": "MIT",
   "type": "module",
-  "types": "dist/index.d.ts",
-  "module": "dist/teapub.esm.min.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.19"
+  },
+  "unpkg": "dist/teapub.esm.min.js",
   "files": [
     "dist/**/*.js",
     "dist/**/*.d.ts"

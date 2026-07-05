@@ -1,9 +1,8 @@
-import { ComponentChildren } from "preact";
-import "preact/src/jsx";
+import type { ComponentChildren } from "preact";
 
 // override xml intrinsic elements
-declare module "preact/src/jsx" {
-  namespace JSXInternal {
+declare module "preact/jsx-runtime" {
+  namespace JSX {
     interface HTMLAttributes {
       xmlns?: string;
       xmlnsEpub?: string;

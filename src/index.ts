@@ -8,17 +8,17 @@
  */
 import JsZip from "jszip";
 import { v4 as uuid4 } from "uuid";
-import { containerXml } from "./container";
-import { contentOpf, type ManifestContent } from "./content";
+import { containerXml } from "./container.js";
+import { contentOpf, type ManifestContent } from "./content.js";
 import {
   getImageMimeExtension,
   getImageMimeType,
   isImageMimeType,
-} from "./image-mime";
-import { nav } from "./nav";
-import { type MissingImage, section } from "./section";
-import { type SectionInfo, tocNcx } from "./toc";
-import type { ImageMime, LangCode } from "./types";
+} from "./image-mime.js";
+import { nav } from "./nav.js";
+import { type MissingImage, section } from "./section.js";
+import { type SectionInfo, tocNcx } from "./toc.js";
+import type { ImageMime, LangCode } from "./types.js";
 
 export type { ImageMime, LangCode, MissingImage };
 export { getImageMimeExtension, getImageMimeType, isImageMimeType };

@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import JsZip from "jszip";
 import { loremIpsum } from "lorem-ipsum";
 import sharp from "sharp";
-import { type ImageData, render } from ".";
+import { type ImageData, render } from "./index.js";
 
 async function randomImage(): Promise<Uint8Array> {
   const buffer = await sharp({

@@ -24,6 +24,29 @@ test("uppercase tags", () => {
   expect(sect).toContain("<p>custom content</p>");
 });
 
+test("lang threads onto html element", () => {
+  const sect = section({
+    title: "title",
+    content: "<p>bonjour</p>",
+    lang: "fr",
+    remapping: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).toContain(`xml:lang="fr"`);
+  expect(sect).toContain(`lang="fr"`);
+  expect(sect).not.toContain(`lang="en"`);
+});
+
+test("lang defaults to en", () => {
+  const sect = section({
+    title: "title",
+    content: "<p>hello</p>",
+    remapping: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).toContain(`lang="en"`);
+});
+
 test("string escapes", () => {
   const sect = section({
     title: "title",

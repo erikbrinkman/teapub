@@ -12,6 +12,16 @@ test("simple", () => {
   expect(content).toContain("custom title");
 });
 
+test("lang threads onto ncx", () => {
+  const content = tocNcx({
+    uid: "1234",
+    title: "custom title",
+    lang: "fr",
+    sections: [],
+  });
+  expect(content).toContain(`xml:lang="fr"`);
+});
+
 test("complex", () => {
   const content = tocNcx({
     uid: "1234",

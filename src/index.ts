@@ -190,7 +190,10 @@ export async function render({
     const id = `section_${i}`;
     const href = `${id}.xhtml`;
     const { title } = sect;
-    oebps.file(href, section({ ...sect, remapping, missingImage, cssFile }));
+    oebps.file(
+      href,
+      section({ ...sect, lang, remapping, missingImage, cssFile }),
+    );
     manifestItems.push({
       id,
       href,
@@ -202,7 +205,10 @@ export async function render({
 
   // add toc
   const tocFilename = "toc.ncx";
-  oebps.file(tocFilename, tocNcx({ uid, title, author, sections: tocItems }));
+  oebps.file(
+    tocFilename,
+    tocNcx({ uid, title, author, lang, sections: tocItems }),
+  );
   manifestItems.push({
     id: "toc",
     href: tocFilename,

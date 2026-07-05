@@ -1,4 +1,5 @@
 import type { VNode } from "preact";
+import type { LangCode } from "./types";
 import { renderToXml, xmlHeader } from "./utils";
 
 const ncxHeader = `<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">`;
@@ -13,10 +14,12 @@ interface Props {
   uid: string;
   title: string;
   author?: string;
+  /** the document language, mirrored onto the `xml:lang` of the ncx */
+  lang?: LangCode;
   sections: readonly SectionInfo[];
 }
 
-function TocNcx({ uid, title, author, sections }: Props): VNode {
+function TocNcx({ uid, title, author, lang = "en", sections }: Props): VNode {
   const docAuthor = author ? (
     <docAuthor>
       <text>{author}</text>
@@ -35,7 +38,7 @@ function TocNcx({ uid, title, author, sections }: Props): VNode {
   return (
     <ncx
       version="2005-1"
-      xmlLang="en"
+      xmlLang={lang}
       xmlns="http://www.daisy.org/z3986/2005/ncx/"
     >
       <head>

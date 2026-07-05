@@ -49,13 +49,49 @@ const buffer = await render({
 });
 ```
 
+Custom `woff2` fonts can be embedded and referenced from your CSS. Each entry
+is keyed by the filename it will be given under `fonts/` in the epub.
+
+```ts
+import { readFile } from "fs/promises";
+import { render } from "teapub";
+
+const data = await readFile("myfont.woff2");
+
+const buffer = await render({
+  title: "title",
+  sections: [{ title: "section title", content: "<p>styled</p>" }],
+  fonts: new Map([["myfont.woff2", data]]),
+  css: `@font-face { font-family: "My Font"; src: url("fonts/myfont.woff2"); }`,
+});
+```
+
+`iframe`s work like images: map the `src` attribute of each `iframe` to an
+XHTML frame document. Unlike sections, frame content is embedded as-is and
+must already be valid XHTML.
+
+```ts
+import { render } from "teapub";
+
+const buffer = await render({
+  title: "title",
+  sections: [{
+    title: "section title",
+    content: `<iframe src="cid:frame"></iframe>`,
+  }],
+  frames: new Map([[
+    "cid:frame",
+    `<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><body><p>inside</p></body></html>`,
+  ]]),
+});
+```
+
 Missing
 -------
 
 This is intended as barebones, so a lot of aspects related to generating
 "books" as epubs are missing, but easily includable upon request:
 
-- [ ] custom fonts
 - [ ] covers, custom or otherwise
 - [ ] table of contents page, custom or otherwise
 - [ ] customizable node and attribute filtering

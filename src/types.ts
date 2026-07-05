@@ -5,7 +5,6 @@ export type ImageMime = `image/${"png" | "jpeg" | "gif" | "svg+xml"}`;
 
 export type Mime =
   | ImageMime
-  // eslint-disable-next-line spellcheck/spell-checker
   | `application/${"xhtml+xml" | "x-dtbncx+xml" | "oebps-package+xml"}`
   | "text/css"
   | "font/woff2";

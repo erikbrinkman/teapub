@@ -48,7 +48,7 @@
     "parse5": "^8.0.0",
     "preact": "^10.29.0",
     "preact-render-to-string": "^6.6.6",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.7",

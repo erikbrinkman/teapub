@@ -1,6 +1,7 @@
 import leven from "leven";
 import { type DefaultTreeAdapterMap, parseFragment } from "parse5";
 import { type ComponentChild, h, type VNode } from "preact";
+import type { LangCode } from "./types";
 import { renderToXml, xmlHeader } from "./utils";
 
 type Node = DefaultTreeAdapterMap["node"];
@@ -20,6 +21,8 @@ export type MissingImage = "error" | "warn" | "ignore" | "remove";
 interface Props {
   title: string;
   content: string;
+  /** the document language, mirrored onto the root `<html>` element */
+  lang?: LangCode;
   remapping: Map<string, string>;
   missingImage: MissingImage;
   cssFile?: string;
@@ -271,6 +274,7 @@ export function convert(
 function Section({
   title,
   content,
+  lang = "en",
   remapping,
   missingImage,
   cssFile,
@@ -280,7 +284,7 @@ function Section({
     <link type="text/css" rel="stylesheet" href={cssFile} />
   ) : null;
   return (
-    <html xmlns="http://www.w3.org/1999/xhtml" xmlLang="en" lang="en">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlLang={lang} lang={lang}>
       <head>
         {/* eslint-disable spellcheck/spell-checker */}
         <meta

@@ -142,6 +142,19 @@ const allowedTags = new Set([
 ]);
 /* eslint-enable spellcheck/spell-checker */
 
+/** decode a percent-encoded src, tolerating malformed encoding and absence */
+function decodeSrc(src: string | undefined): string {
+  // an absent src normalizes to "" so it flows through the missingImage policy
+  // rather than being coerced to the literal string "undefined"
+  if (src === undefined) return "";
+  try {
+    return decodeURIComponent(src);
+  } catch {
+    // malformed percent-encoding (e.g. a bare `%`) — use the literal value
+    return src;
+  }
+}
+
 function findClosest(
   haystack: Iterable<string>,
   needle: string,
@@ -165,6 +178,35 @@ class Converter {
     private missingImage: MissingImage,
   ) {}
 
+  /**
+   * remap an img/iframe `src` to its packaged href in place
+   *
+   * @returns `false` when the element should be dropped (`missingImage: "remove"`)
+   */
+  private remapSrc(
+    kind: "img" | "iframe",
+    attributes: Record<string, string>,
+  ): boolean {
+    const searchSrc = decodeSrc(attributes.src);
+    const src = this.remapping.get(searchSrc);
+    if (src !== undefined) {
+      attributes.src = src;
+    } else if (this.missingImage === "error") {
+      throw new Error(`${kind} src '${searchSrc}' wasn't in remapped items`);
+    } else if (this.missingImage === "warn") {
+      const closest = findClosest(this.remapping.keys(), searchSrc);
+      const suffix = closest
+        ? `the closest match was '${closest}'`
+        : "there were no remapped items";
+      console.warn(
+        `${kind} src '${searchSrc}' wasn't in remapped items; ${suffix}`,
+      );
+    } else if (this.missingImage === "remove") {
+      return false;
+    }
+    return true;
+  }
+
   /** convert node-html-parser node to preact vnode */
   convert(node: Node, inForeign: boolean): ComponentChild {
     if ("tagName" in node) {
@@ -182,40 +224,9 @@ class Converter {
       );
 
       // remap images and frames
-      if (node.nodeName === "img") {
-        const searchSrc = decodeURIComponent(attributes.src);
-        const src = this.remapping.get(searchSrc);
-        if (src !== undefined) {
-          attributes.src = src;
-        } else if (this.missingImage === "error") {
-          throw new Error(`img src '${searchSrc}' wasn't in remapped items`);
-        } else if (this.missingImage === "warn") {
-          const closest = findClosest(this.remapping.keys(), searchSrc);
-          const suffix = closest
-            ? `the closest match was '${closest}'`
-            : "there were no remapped items";
-          console.warn(
-            `img src '${searchSrc}' wasn't in remapped items; ${suffix}`,
-          );
-        } else if (this.missingImage === "remove") {
-          return null;
-        }
-      } else if (node.nodeName === "iframe") {
-        const searchSrc = decodeURIComponent(attributes.src);
-        const src = this.remapping.get(searchSrc);
-        if (src !== undefined) {
-          attributes.src = src;
-        } else if (this.missingImage === "error") {
-          throw new Error(`iframe src '${searchSrc}' wasn't in remapped items`);
-        } else if (this.missingImage === "warn") {
-          const closest = findClosest(this.remapping.keys(), searchSrc);
-          const suffix = closest
-            ? `the closest match was '${closest}'`
-            : "there were no remapped items";
-          console.warn(
-            `iframe src '${searchSrc}' wasn't in remapped items; ${suffix}`,
-          );
-        } else if (this.missingImage === "remove") {
+      if (node.nodeName === "img" || node.nodeName === "iframe") {
+        if (!this.remapSrc(node.nodeName, attributes)) {
+          // missingImage === "remove"
           return null;
         }
       }

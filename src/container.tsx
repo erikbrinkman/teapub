@@ -1,5 +1,5 @@
 import type { VNode } from "preact";
-import { renderToXml, xmlHeader } from "./utils";
+import { renderToXml, xmlHeader } from "./utils.js";
 
 interface Props {
   contentOpf?: string;

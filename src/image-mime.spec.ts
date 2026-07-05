@@ -3,7 +3,7 @@ import {
   getImageMimeExtension,
   getImageMimeType,
   isImageMimeType,
-} from "./image-mime";
+} from "./image-mime.js";
 
 test("isImageMimeType()", () => {
   expect(isImageMimeType("image/jpeg")).toBe(true);

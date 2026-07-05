@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { nav } from "./nav";
+import { nav } from "./nav.js";
 
 test("simple", () => {
   const content = nav({

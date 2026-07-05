@@ -1,4 +1,4 @@
-import type { ImageMime } from "./types";
+import type { ImageMime } from "./types.js";
 
 const mimeToExtension = new Map<ImageMime, string>([
   ["image/png", "png"],

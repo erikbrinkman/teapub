@@ -2,7 +2,6 @@ import { ComponentChildren } from "preact";
 import "preact/src/jsx";
 
 // override xml intrinsic elements
-// eslint-disable-next-line spellcheck/spell-checker
 declare module "preact/src/jsx" {
   namespace JSXInternal {
     interface HTMLAttributes {

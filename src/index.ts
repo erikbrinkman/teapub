@@ -102,7 +102,6 @@ export interface RenderOptions {
   fonts?: Map<string, Uint8Array> | undefined;
   /** custom global css to apply */
   css?: string;
-  // eslint-disable-next-line spellcheck/spell-checker
   /** how to handle missing images and iframes */
   missingImage?: MissingImage;
 }
@@ -220,7 +219,6 @@ export async function render({
   manifestItems.push({
     id: "toc",
     href: tocFilename,
-    // eslint-disable-next-line spellcheck/spell-checker
     mediaType: "application/x-dtbncx+xml",
     spine: false,
   });

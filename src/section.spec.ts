@@ -77,6 +77,29 @@ test("encoded image src remapping", () => {
   expect(sect).not.toContain(`p src="remapped"`);
 });
 
+test("malformed encoded src doesn't crash", () => {
+  // a bare `%` makes decodeURIComponent throw URIError; the raw src should be
+  // used as the lookup key instead of crashing the whole render
+  const sect = section({
+    title: "title",
+    content: `<img src="sale 100%.png" />`,
+    remapping: new Map([["sale 100%.png", "remapped"]]),
+    missingImage: "error",
+  });
+  expect(sect).toContain(`src="remapped"`);
+});
+
+test("malformed encoded src routes through policy", () => {
+  const sect = section({
+    title: "title",
+    content: `<img src="100%.png" />`,
+    remapping: new Map(),
+    missingImage: "remove",
+  });
+  expect(sect).toContain("<body />");
+  expect(sect).not.toContain("<img");
+});
+
 test("missing image error", () => {
   expect(() =>
     section({
@@ -86,6 +109,24 @@ test("missing image error", () => {
       missingImage: "error",
     }),
   ).toThrow("img src");
+});
+
+test("absent src normalizes to empty, not 'undefined'", () => {
+  expect(() =>
+    section({
+      title: "title",
+      content: `<img />`,
+      remapping: new Map(),
+      missingImage: "error",
+    }),
+  ).toThrow("img src '' wasn't in remapped items");
+  const removed = section({
+    title: "title",
+    content: `<img />`,
+    remapping: new Map(),
+    missingImage: "remove",
+  });
+  expect(removed).not.toContain("<img");
 });
 
 test("missing image warn", () => {

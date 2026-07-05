@@ -178,6 +178,17 @@ test("filtered tags", () => {
   expect(sect).toContain("I have secret text");
 });
 
+test("invalid tag unwraps", () => {
+  const sect = section({
+    title: "title",
+    content: "<bar>x</bar>",
+    remapping: new Map(),
+    missingImage: "error",
+  });
+  expect(sect).not.toContain("<bar>");
+  expect(sect).toContain("x");
+});
+
 test("comments", () => {
   const sect = section({
     title: "title",

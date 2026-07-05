@@ -103,7 +103,6 @@ const allowedTags = new Set([
   "code",
   "samp",
   "kbd",
-  "bar",
   "cite",
   "abbr",
   "acronym",
@@ -136,13 +135,9 @@ const allowedTags = new Set([
   "embed",
   "applet",
   "iframe",
-  "img",
   "map",
   "noscript",
   "svg",
-  "object",
-  "table",
-  "tt",
   "var",
 ]);
 /* eslint-enable spellcheck/spell-checker */

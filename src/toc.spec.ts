@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { tocNcx } from "./toc";
+import { tocNcx } from "./toc.js";
 
 test("simple", () => {
   const content = tocNcx({

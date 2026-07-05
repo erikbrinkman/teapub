@@ -1,6 +1,6 @@
 import type { VNode } from "preact";
-import type { LangCode } from "./types";
-import { renderToXml, xmlHeader } from "./utils";
+import type { LangCode } from "./types.js";
+import { renderToXml, xmlHeader } from "./utils.js";
 
 const ncxHeader = `<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">`;
 

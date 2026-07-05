@@ -1,6 +1,6 @@
 import type { VNode } from "preact";
-import type { LangCode, Mime } from "./types";
-import { renderToXml, xmlHeader } from "./utils";
+import type { LangCode, Mime } from "./types.js";
+import { renderToXml, xmlHeader } from "./utils.js";
 
 export interface ManifestContent {
   id: string;

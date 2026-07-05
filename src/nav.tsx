@@ -1,6 +1,6 @@
 import type { VNode } from "preact";
-import type { LangCode } from "./types";
-import { renderToXml, xmlHeader } from "./utils";
+import type { LangCode } from "./types.js";
+import { renderToXml, xmlHeader } from "./utils.js";
 
 const xhtmlHeader = `<!DOCTYPE html>`;
 

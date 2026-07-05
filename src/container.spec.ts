@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { containerXml } from "./container";
+import { containerXml } from "./container.js";
 
 test("default", () => {
   const container = containerXml();

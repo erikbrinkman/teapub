@@ -58,7 +58,7 @@ jobs:
       # publish steps above don't run in the github-pages environment.
       - run: bun doc
       - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs
 

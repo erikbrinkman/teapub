@@ -150,15 +150,14 @@ export async function render({
   // add frames
   let fIdx = 0;
   for (const [src, content] of frames) {
-    const id = `frame_${fIdx++}.xhtml`;
-    const mediaType = "text/html";
-    const href = `frames/${id}.html`;
+    const id = `frame_${fIdx++}`;
+    const href = `frames/${id}.xhtml`;
     oebps.file(href, content);
     remapping.set(src, href);
     manifestItems.push({
       id,
       href,
-      mediaType,
+      mediaType: "application/xhtml+xml",
       spine: false,
     });
   }

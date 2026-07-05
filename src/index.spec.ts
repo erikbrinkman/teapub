@@ -47,6 +47,25 @@ test("minimal", async () => {
   await Bun.write("minimal.epub", buff);
 });
 
+test("frame manifest entry is a valid xhtml item", async () => {
+  const frame = `<!doctype html><html><head></head><body><p>f</p></body></html>`;
+  const buff = await render({
+    title: "Framed",
+    sections: [{ title: "s", content: `<iframe src="cid:frame"></iframe>` }],
+    frames: new Map([["cid:frame", frame]]),
+  });
+
+  const zip = await JsZip.loadAsync(buff);
+  const opf = await zip.file("OEBPS/content.opf")?.async("string");
+  expect(opf).toContain(`href="frames/frame_0.xhtml"`);
+  expect(opf).toContain(`id="frame_0"`);
+  expect(opf).toContain(`media-type="application/xhtml+xml"`);
+  expect(opf).not.toContain("frame_0.xhtml.html");
+  expect(opf).not.toContain(`media-type="text/html"`);
+  // the frame file is written at the manifested href
+  expect(zip.file("OEBPS/frames/frame_0.xhtml")).not.toBeNull();
+});
+
 test("advanced", async () => {
   // generate content
   const sections = [];

@@ -12,17 +12,12 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -39,11 +34,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version ${{ inputs.bump }}
 
-      # Publish to npm with provenance (authenticated via OIDC trusted publishing)
-      # Done before git push so a publish failure won't leave orphaned version bumps
+      # Publish via OIDC trusted publishing (no token), which needs npm >=
+      # 11.5.1 — newer than the runner's, so upgrade first. Before git push so
+      # a failed publish leaves no orphaned version bump.
       - uses: actions/setup-node@v4
         with:
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@latest
       - run: npm publish --provenance --access public --ignore-scripts
 
       - run: git push --follow-tags
@@ -53,11 +51,23 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      # Docs
+      # Build + upload the Pages artifact; a separate job deploys it so the
+      # publish steps above don't run in the github-pages environment.
       - run: bun doc
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
+
+  deploy-pages:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v4

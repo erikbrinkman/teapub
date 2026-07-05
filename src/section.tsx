@@ -29,7 +29,6 @@ interface Props {
 }
 
 const xhtmlHeader = `<!DOCTYPE html>`;
-/* eslint-disable spellcheck/spell-checker */
 const allowedAttributes = new Set([
   "content",
   "alt",
@@ -143,7 +142,6 @@ const allowedTags = new Set([
   "svg",
   "var",
 ]);
-/* eslint-enable spellcheck/spell-checker */
 
 /** decode a percent-encoded src, tolerating malformed encoding and absence */
 function decodeSrc(src: string | undefined): string {
@@ -286,12 +284,10 @@ function Section({
   return (
     <html xmlns="http://www.w3.org/1999/xhtml" xmlLang={lang} lang={lang}>
       <head>
-        {/* eslint-disable spellcheck/spell-checker */}
         <meta
           http-equiv="Content-Type"
           content="application/xhtml+xml; charset=utf-8"
         />
-        {/* eslint-enable spellcheck/spell-checker */}
         {cssHeader}
         <title>{title}</title>
       </head>

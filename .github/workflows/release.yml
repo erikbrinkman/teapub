@@ -57,7 +57,7 @@ jobs:
       # Build + upload the Pages artifact; a separate job deploys it so the
       # publish steps above don't run in the github-pages environment.
       - run: bun doc
-      - uses: actions/configure-pages@v4
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs

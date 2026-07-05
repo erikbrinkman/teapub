@@ -6,12 +6,38 @@ test("simplest", () => {
     uid: "1234",
     title: "custom title",
     lang: "en",
+    modified: "2026-01-01T00:00:00Z",
     content: [],
   });
   expect(content).not.toContain("::");
   expect(content).toContain("1234");
   expect(content).toContain("custom title");
   expect(content).toContain("en");
+});
+
+test("epub 3 shape", () => {
+  const content = contentOpf({
+    uid: "1234",
+    title: "custom title",
+    lang: "en",
+    modified: "2026-01-01T00:00:00Z",
+    content: [
+      {
+        id: "nav",
+        href: "nav.xhtml",
+        mediaType: "application/xhtml+xml",
+        spine: false,
+        properties: "nav",
+      },
+    ],
+  });
+  expect(content).toContain(`version="3.0"`);
+  expect(content).toContain(
+    `property="dcterms:modified">2026-01-01T00:00:00Z</meta>`,
+  );
+  expect(content).toContain(`properties="nav"`);
+  expect(content).toContain(`toc="toc"`);
+  expect(content).not.toContain("<guide");
 });
 
 test("everything", () => {
@@ -24,6 +50,7 @@ test("everything", () => {
     subjects: ["subject4"],
     copyright: "copyright5",
     lang: "en",
+    modified: "2026-01-01T00:00:00Z",
     content: [
       {
         id: "id1",

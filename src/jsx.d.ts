@@ -7,7 +7,9 @@ declare module "preact/src/jsx" {
   namespace JSXInternal {
     interface HTMLAttributes {
       xmlns?: string;
+      xmlnsEpub?: string;
       xmlLang?: string;
+      "epub:type"?: string;
     }
 
     interface IntrinsicElements {
@@ -37,7 +39,12 @@ declare module "preact/src/jsx" {
         xmlnsOpf: string;
         version: string;
       };
-      item: { id: string; href: string; "media-type": Mime };
+      item: {
+        id: string;
+        href: string;
+        "media-type": Mime;
+        properties?: string;
+      };
       itemref: { idref: string };
       rootfile: { "full-path": string; "media-type": Mime };
       rootfiles: { children: ComponentChildren };

@@ -15,6 +15,7 @@ import {
   getImageMimeType,
   isImageMimeType,
 } from "./image-mime";
+import { nav } from "./nav";
 import { type MissingImage, section } from "./section";
 import { type SectionInfo, tocNcx } from "./toc";
 import type { ImageMime, LangCode } from "./types";
@@ -73,6 +74,13 @@ export interface RenderOptions {
   uid?: string | undefined;
   /** the two letter language code (default: "en") */
   lang?: LangCode | undefined;
+  /**
+   * the last-modified time recorded as EPUB 3 `dcterms:modified` metadata
+   *
+   * Defaults to the current time. Pass a fixed `Date` for byte-reproducible
+   * output.
+   */
+  modified?: Date | undefined;
   /** the content of the epub */
   sections: readonly Section[];
   /**
@@ -113,6 +121,7 @@ export async function render({
   description,
   uid = uuid4(),
   lang = "en",
+  modified = new Date(),
   sections,
   images = new Map(),
   frames = new Map(),
@@ -216,7 +225,20 @@ export async function render({
     spine: false,
   });
 
+  // add nav
+  const navFilename = "nav.xhtml";
+  oebps.file(navFilename, nav({ title, lang, sections: tocItems }));
+  manifestItems.push({
+    id: "nav",
+    href: navFilename,
+    mediaType: "application/xhtml+xml",
+    properties: "nav",
+    spine: false,
+  });
+
   // add manifest
+  // dcterms:modified must be CCYY-MM-DDThh:mm:ssZ, with no fractional seconds
+  const modifiedIso = modified.toISOString().replace(/\.\d{3}Z$/, "Z");
   oebps.file(
     "content.opf",
     contentOpf({
@@ -227,6 +249,7 @@ export async function render({
       subjects,
       description,
       lang,
+      modified: modifiedIso,
       uid,
       content: manifestItems,
     }),

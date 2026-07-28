@@ -1,0 +1,49 @@
+# Cut a release: the sole writer to main -- bump + tag, then dispatch release + docs off the tag.
+name: cut
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write # push the bump + tag
+  actions: write # dispatch release + docs
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  gate:
+    uses: ./.github/workflows/build.yml
+
+  cut:
+    needs: gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main # the branch tip, not the dispatch SHA
+          fetch-depth: 0
+      - name: Bump, tag, and trigger release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(npm version --no-git-tag-version ${{ inputs.bump }} | sed 's/^v//')
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "v${version}"
+          # branch first, tag second (never --follow-tags): a moved main is rejected before the tag exists
+          git push origin HEAD:main
+          git tag -a "v${version}" -m "v${version}"
+          git push origin "v${version}"
+          # token-pushed tags don't fire on:push, so dispatch instead
+          gh workflow run release.yml --ref main -f tag="v${version}"
+          gh workflow run docs.yml --ref main -f tag="v${version}"

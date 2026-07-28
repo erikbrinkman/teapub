@@ -12,7 +12,7 @@
 #########
 coverage
 node_modules
-tsconfig.tsbuildinfo
+*.tsbuildinfo
 .eslintcache
 
 # Artifacts #

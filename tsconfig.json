@@ -11,7 +11,8 @@
     "noEmit": true,
     "strict": true,
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["bun"]
   },
   "include": ["src"]
 }

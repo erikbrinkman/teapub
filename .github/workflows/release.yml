@@ -1,76 +1,37 @@
+# Publish a tagged release to npm, then the GitHub release; keep the name release.yml for npm trusted publishing.
 name: release
-
 on:
   workflow_dispatch:
     inputs:
-      bump:
-        description: Version bump type
+      tag:
+        description: "Release tag to publish (e.g. v0.3.0)"
         required: true
-        type: choice
-        options: [patch, minor, major]
+        type: string
+
+permissions:
+  contents: write # create the GitHub release
+  id-token: write # trusted publishing to npm
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  # Run the same gate as pull requests
-  gate:
-    uses: ./.github/workflows/build.yml
-
-  release:
-    needs: gate
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag }}
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-
-      # Version bump → commit + tag (local only, not pushed yet)
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          npm version ${{ inputs.bump }}
-
-      # Build dist for publishing (the gate already linted and tested)
       - run: bun export
-
-      # Publish via OIDC trusted publishing (no token), which needs npm >=
-      # 11.5.1 — newer than the runner's, so upgrade first. Before git push so
-      # a failed publish leaves no orphaned version bump.
+      # node 24 ships npm 11.x, required for OIDC trusted publishing
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm install -g npm@latest
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
       - run: npm publish --provenance --access public --ignore-scripts
-
-      - run: git push --follow-tags
-
-      # GitHub Release with auto-generated notes
-      - run: gh release create "v$(jq -r .version package.json)" --generate-notes
+      - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-
-      # Build + upload the Pages artifact; a separate job deploys it so the
-      # publish steps above don't run in the github-pages environment.
-      - run: bun doc
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-  deploy-pages:
-    needs: release
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v5
+        run: gh release create "${{ inputs.tag }}" --generate-notes --verify-tag

@@ -24,7 +24,7 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
 
@@ -40,7 +40,7 @@ jobs:
       # Publish via OIDC trusted publishing (no token), which needs npm >=
       # 11.5.1 — newer than the runner's, so upgrade first. Before git push so
       # a failed publish leaves no orphaned version bump.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
@@ -57,7 +57,7 @@ jobs:
       # Build + upload the Pages artifact; a separate job deploys it so the
       # publish steps above don't run in the github-pages environment.
       - run: bun doc
-      - uses: actions/configure-pages@v4
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
@@ -73,4 +73,4 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

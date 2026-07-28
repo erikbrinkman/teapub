@@ -1,5 +1,3 @@
-import "preact/src/jsx";
-
 /** all valid image mime types for epub */
 export type ImageMime = `image/${"png" | "jpeg" | "gif" | "svg+xml"}`;
 

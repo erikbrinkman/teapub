@@ -1,15 +1,17 @@
 import type { ComponentChildren } from "preact";
 
+declare module "preact" {
+  interface HTMLAttributes {
+    xmlns?: string;
+    xmlnsEpub?: string;
+    xmlLang?: string;
+    "epub:type"?: string;
+  }
+}
+
 // override xml intrinsic elements
 declare module "preact/jsx-runtime" {
   namespace JSX {
-    interface HTMLAttributes {
-      xmlns?: string;
-      xmlnsEpub?: string;
-      xmlLang?: string;
-      "epub:type"?: string;
-    }
-
     interface IntrinsicElements {
       ncx: {
         children: ComponentChildren;
